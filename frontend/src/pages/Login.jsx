@@ -1,8 +1,13 @@
+import {Div} from "../components/common/Index"
+import {  SignIn, SIgnInContent } from "../components/ui/Index"
 
-const Login = () => {
+
+export const Login = () => {
   return (
-    <div>Login</div>
+      <Div  className={'grid grid-cols-8'}>
+        <SignIn/>
+        <SIgnInContent />
+    </Div>
   )
 }
 
-export default Login
