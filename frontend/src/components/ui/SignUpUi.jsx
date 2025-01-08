@@ -2,6 +2,10 @@ import { useForm } from "react-hook-form";
 import { Button, Div, InputField, Text } from "../common/Index";
 import { CiMail, CiLock } from "react-icons/ci";
 import { FiUser } from "react-icons/fi";
+import { signupUser } from "../../services/postApi";
+import { setAccessToken } from "../../Redux/feathers/auth";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const SignUpUi = () => {
   const {
@@ -9,9 +13,24 @@ export const SignUpUi = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onSubmit = async (data) => {
     console.log("Form Data:", data);
+    try {
+      const response = await signupUser(data);
+      console.log(response);
+      const {accessToken} = response;
+      
+      dispatch(setAccessToken(accessToken))
+      // notification.success({ message: "Signup successful!", description: response.message });
+      navigate("/home");
+
+      // notification.success({ message: "Signup successful!", description: response.message });
+    } catch (error) {
+      console.log(error);
+      // notification.error({ message: "Signup failed", description: error.message });
+    }
   };
   return (
     <Div className="col-span-5 px-20 flex flex-col text-center justify-center items-center min-h-screen">
@@ -28,7 +47,7 @@ export const SignUpUi = () => {
           placeholder="Name"
             icon={FiUser }
           register={register}
-          name="name"
+          name="username"
           validation={{
             required: "Name is required",
           

@@ -9,11 +9,12 @@ export default {
       colors: {
         primary: "#003F62",
         secondary: "#EDA415", 
-        info: '#F4F8F5'
+        info: '#F4F8F5',
+        btn: '#EEEEEE'
       },
     },
   },
   plugins: [
-    require('daisyui'), // Correct plugin syntax
+    require('daisyui'),
   ],
 };

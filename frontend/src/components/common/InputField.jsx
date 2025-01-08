@@ -12,7 +12,7 @@ export const InputField = ({
   icon: Icon = null, // Optional icon prop
 }) => {
   return (
-    <Div className="mb-4">
+    <Div className="mb-4 w-full">
       <Div className="relative flex items-center">
         {Icon && (
           <span className="absolute text-xl left-3 text-gray-500">

@@ -1,16 +1,35 @@
 import { useForm } from "react-hook-form";
 import { Button, Div, InputField, Text } from "../common/Index";
 import { CiMail, CiLock } from "react-icons/ci";
-
+import { loginUser } from "../../services/postApi";
+import { useNavigate } from "react-router-dom";
+import { setAccessToken } from "../../Redux/feathers/auth";
+import { useDispatch } from "react-redux";
 export const SignIn = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onSubmit = async (data) => {
     console.log("Form Data:", data);
+    try {
+      const response = await loginUser(data);
+      const { accessToken } = response.data;
+      dispatch(setAccessToken(accessToken));
+      // notification.success({
+      //   message: "Signup successful!",
+      //   description: response.message,
+      // });
+      navigate("/home");
+    } catch (error) {
+      // notification.error({
+      //   message: "Signup failed",
+      //   description: error.message,
+      // });
+    }
   };
 
   return (
@@ -22,7 +41,7 @@ export const SignIn = () => {
       <Div className="w-full max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Email Input */}
-          <InputField 
+          <InputField
             type="email"
             placeholder="Email"
             icon={CiMail}
@@ -56,7 +75,10 @@ export const SignIn = () => {
           />
 
           {/* Submit Button */}
-          <Button type="submit" className="btn bg-secondary  mx-auto w-fit px-20 rounded-full text-white text-xl ">
+          <Button
+            type="submit"
+            className="btn bg-secondary  mx-auto w-fit px-20 rounded-full text-white text-xl "
+          >
             Sign In
           </Button>
         </form>

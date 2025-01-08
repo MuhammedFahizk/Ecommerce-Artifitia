@@ -20,7 +20,8 @@ const REFRESH_TOKEN = {
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
+    console.log(req.body);
+    
     const newUser = new User({ username, email, password });
     await newUser.save();
     console.log(newUser.toJSON());

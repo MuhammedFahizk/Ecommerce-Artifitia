@@ -1,5 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import {Login, NotFound, SignUp} from "../pages/Index.js";
+import PublicRoutes from "../Utils/PublicRoutes.jsx";
+import Home from "../pages/Home.jsx";
+import CommonRoutes from "../Utils/CommonRoutes.jsx";
 
 export const routes = createBrowserRouter([
   {
@@ -7,13 +10,29 @@ export const routes = createBrowserRouter([
     children: [
 
       {
-        path: "/login",
-        element: <Login />,
+        path: "/",
+        element: <PublicRoutes />,
+        children: [
+          {
+            path: "/login",
+            element: <Login />,
+          },
+          {
+            path: "/signUp",
+            element: <SignUp />,
+          },
+        ],
       },
       {
-        path: "/sign-up",
-        element: <SignUp />,
-      },
+        path: "/",
+        // element: <PublicRoutes />,
+        element: <CommonRoutes />,
+        children: [
+          {
+            path: "/home",
+            element: <Home />,
+          },
+    ]},
       {
         path: "*",
         element: <NotFound />,

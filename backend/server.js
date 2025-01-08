@@ -13,6 +13,7 @@ import {
   AppErrorHandler,
 } from "./config/exceptionHandlers/handler.js"
 import { corsOptions } from "./config/Cors/cors.js";
+import fileUpload from "express-fileupload";
 dotenv.config();
 connectDB();
 
@@ -25,7 +26,21 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(fileUpload(
+  {
+    useTempFiles : true,
+    tempFileDir : "/tmp/",
+    createParentPath: true
 
+  }
+));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
+  next();
+});
 app.use("/api", router);
 app.all("*", function (req, res, next) {
   next();
@@ -37,6 +52,8 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Internal Server Error" });
 });
+
+
 
 // Start the server
 app.listen(PORT, () => {
