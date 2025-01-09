@@ -7,6 +7,7 @@ export const Category = () => {
   const [categories, setCategories] = useState([]); // State to store categories
   const [expandedIndex, setExpandedIndex] = useState(null); // State to track expanded category
   const [subCategories, setSubCategories] = useState({}); // State to store subcategories for each category
+  const [selectedSubCategories, setSelectedSubCategories] = useState([]); // State to store selected subcategories
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,6 +42,18 @@ export const Category = () => {
     }
   };
 
+  const handleCheckboxChange = (subCategory) => {
+    setSelectedSubCategories((prev) => {
+      if (prev.includes(subCategory)) {
+        // Remove the subcategory if it's already selected
+        return prev.filter((item) => item !== subCategory);
+      } else {
+        // Add the subcategory if it's not selected
+        return [...prev, subCategory];
+      }
+    });
+  };
+
   return (
     <Div className={"space-y-2 items-center w-full px-4"}>
       <Text className={"text-primary text-lg font-bold"}>Categories</Text>
@@ -64,9 +77,16 @@ export const Category = () => {
 
               {expandedIndex === index && (
                 <Div className="pl-4 mt-2 text-secondary text-sm">
-                  {subCategories[category._id] ?(
+                  {subCategories[category._id] ? (
                     subCategories[category._id].map((subCategory, i) => (
-                      <Text key={i}>{subCategory.name}</Text> 
+                      <Div key={i} className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedSubCategories.includes(subCategory.name)} // Check if it's selected
+                          onChange={() => handleCheckboxChange(subCategory.name)} // Handle selection
+                        />
+                        <Text>{subCategory.name}</Text>
+                      </Div>
                     ))
                   ) : (
                     <Text>Loading...</Text>
@@ -77,6 +97,22 @@ export const Category = () => {
           ))
         ) : (
           <Text className={"text-secondary"}>No categories found</Text>
+        )}
+      </Div>
+
+      {/* Display Selected Subcategories */}
+      <Div className="mt-4">
+        <Text className={"text-primary font-semibold"}>Selected Subcategories:</Text>
+        {selectedSubCategories.length > 0 ? (
+          <ul className="list-disc pl-4">
+            {selectedSubCategories.map((subCategory, index) => (
+              <li key={index} className="text-secondary text-sm">
+                {subCategory}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Text className={"text-secondary"}>No subcategories selected</Text>
         )}
       </Div>
     </Div>

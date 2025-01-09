@@ -1,43 +1,76 @@
-import React, { useEffect, useState } from "react";
-import { getAllProducts } from "../../services/postApi";
-import { Card, Div, Text } from "../common/Index"; // Assuming Text is also imported for displaying product details
+import React, { useState, useMemo } from "react";
+import { Card, Div, Text, Button } from "../common/Index"; // Assuming Button is imported for pagination
+import { useFetchProducts } from "../../hooks/useFetchProducts";
 
-export const Products = () => {
-  const [products, setProducts] = useState([]); 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); 
-    const [cart, setCart] = useState ( [])
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getAllProducts(); 
-        setProducts(response.data.products);
-        setCart(response.data.cart)
-        setLoading(false); 
-      } catch (error) {
-        setError("Error fetching products");
-        setLoading(false);
-      }
-    };
+export const Products = ({ pagination, setPagination }) => {
+  const { products, loading, error, cart } = useFetchProducts(pagination, setPagination);
+  
+  const handlePageChange = (page) => {
+    setPagination((prev) => ({ ...prev, currentPage: page })); // Update the current page
+  };
 
-    fetchProducts();
-  }, []);
+  const handleLimitChange = (newLimit) => {
+    if (newLimit !== pagination.limit) {
+      setPagination((prev) => ({ ...prev, limit: newLimit, currentPage: 1 })); // Reset page to 1 on limit change
+    }
+  };
+
+  const paginationMemo = useMemo(() => {
+    return Array.from({ length: pagination.totalPages }, (_, i) => i + 1);
+  }, [pagination.totalPages]);
 
   return (
-    <Div className={'col-span-4  p-4 px-10'}>
+    <Div className={"col-span-4 p-4 px-10"}>
       {loading ? (
-        <Text className={'text-white'}>Loading products...</Text> // Display loading text
+        <Text className={"text-white"}>Loading products...</Text>
       ) : error ? (
-        <Text className={'text-white'}>{error}</Text> // Display error message if there is an issue
+        <Text className={"text-white"}>{error}</Text>
       ) : (
-        <Div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {products.length > 0 ? (
-            products.map((product, index) => (
-            <Card key={index} product={product} cart={cart}/>
-            ))
-          ) : (
-            <Text className={'text-white'}>No products available</Text> // If no products are found
-          )}
+        <Div>
+          <Div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <Card key={index} product={product} cart={cart} />
+              ))
+            ) : (
+              <Text className={"text-white"}>No products available</Text>
+            )}
+          </Div>
+          <Div className={"w-full flex justify-between py-4 items-center"}>
+            <Text className={"text-xs text-gray-500 font-semibold"}>
+              {products.length} of {pagination.totalProducts} items
+            </Text>
+            <Div className="flex space-x-2">
+              {paginationMemo.map((page) => (
+                <Button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`px-3 py-1 rounded-full ${
+                    page === pagination.currentPage
+                      ? "bg-secondary text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Div>
+            <Div className={"flex justify-center items-center h-fit"}>
+              <Text className={"text-xs text-gray-500 font-semibold "}>
+                Show rows:
+              </Text>
+              <select
+                className="px-3 py-1 text-secondary rounded-md text-xs ml-2"
+                value={pagination.limit}
+                onChange={(e) => handleLimitChange(parseInt(e.target.value, 10))}
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+              </select>
+            </Div>
+          </Div>
         </Div>
       )}
     </Div>

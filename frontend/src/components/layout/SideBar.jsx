@@ -8,9 +8,8 @@ import { getCartsItems } from "../../services/getApi"; // Make sure this functio
 import { SlClose } from "react-icons/sl";
 
 export const SideBar = ({ setSideMenuIsExpand }) => {
-  const [cartItems, setCartItems] = useState([]); // State to hold cart items
+  const [cartItems, setCartItems] = useState([]);
 
-  // Fetch cart items when component mounts or sidebar is opened
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -25,7 +24,7 @@ export const SideBar = ({ setSideMenuIsExpand }) => {
     };
 
     fetchCartItems();
-  }, []); // Empty dependency array to run once when the component mounts
+  }, []);
   console.log(cartItems);
 
   return (

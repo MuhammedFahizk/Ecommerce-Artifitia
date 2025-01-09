@@ -45,14 +45,5 @@ router.get("/getProduct/:id", requireAuthentication, productController.getProduc
  */
 router.post("/addToCart/:productId", requireAuthentication, productController.addToCart);
 
-/**
- * @route GET /api/getAllCarts
- * @description Fetches all items in the user's cart
- * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object for sending responses
- * @returns {Object} - Response object containing the user's cart data
- */
-// router.get("/getAllCarts", requireAuthentication, cartController.getAllCarts);
 
 export default router;
