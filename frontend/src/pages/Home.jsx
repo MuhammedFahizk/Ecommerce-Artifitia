@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Breadcrumb, Button, Div, Modal } from "../components/common/Index";
-import { AddCategory, AddProduct, AddSubCategory } from "../components/ui/Index";
+import { AddCategory, AddProduct, AddSubCategory, ProductList } from "../components/ui/Index";
 
 const Home = () => {
   const [activeModal, setActiveModal] = useState(null);
@@ -29,11 +29,14 @@ const Home = () => {
       </Div>
 
       {modalData.map(({ type, Component }) => (
-        <Modal key={type} isOpen={activeModal === type} onClose={() => setActiveModal(null)} width={type === 'product' ? 'max-w-2xl' : undefined} 
+        <Modal key={type} isOpen={activeModal === type} onClose={() => setActiveModal(null)} width={type === 'product' ? 'min-w-3xl  ' : undefined} 
         >
+          
           <Component closeModal={() =>  setActiveModal(null)} />
         </Modal>
       ))}
+      <ProductList/>
+
     </Div>
   );
 };

@@ -40,7 +40,6 @@ function logError(error, store) {
     
     // Add custom variable on window object when network error occurs
     if (error?.code === "ERR_NETWORK") window.NetworkError = error?.code;
-
     // store?.dispatch(
     //   newNotify({
     //     variant: "danger",
@@ -50,6 +49,8 @@ function logError(error, store) {
   }
   // Something happened in setting up the request that triggered an Error
   else {
+    store?.dispatch(authUserLogout())
+
     // store?.dispatch(
     //   newNotify({
     //     variant: "danger",

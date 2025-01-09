@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -52,6 +52,15 @@ const UserSchema = new Schema({
     enum: ['male', 'female', 'other'],
     default: 'other',
   },
+  cart: {
+    type: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
+    default: [],
+  },
   locationName: {
     type: String,
     default: '',
@@ -86,8 +95,8 @@ UserSchema.pre("save", async function (next) {
 UserSchema.set("toJSON", {
     virtuals: true,
     transform: function (doc, ret, options) {
-      const { username, email } = ret;
-      return { username, email }; 
+      const { username, email , cart} = ret;
+      return { username, email, cart}; 
     },
   });
   

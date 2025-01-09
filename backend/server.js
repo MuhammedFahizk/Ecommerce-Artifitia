@@ -26,14 +26,12 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(fileUpload(
-  {
-    useTempFiles : true,
-    tempFileDir : "/tmp/",
-    createParentPath: true
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: "/tmp/",
+  createParentPath: true
+}));
 
-  }
-));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {

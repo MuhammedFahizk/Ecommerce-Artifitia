@@ -48,3 +48,48 @@ export const getSubCategory = async () => {
 };
 
 
+export const getSubCategoryWithCategory = async (categoryId) => {
+  try {
+    const response = await apiInstance.get(`/getSubCategoryWithCategory?categoryId=${categoryId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+    throw error.response ? error.response.data : new Error(error.message);
+  }
+};
+
+
+/**
+ * Fetch product by id 
+ * @returns {Promise<object>} - User history data
+ */
+export const getProduct = async (id) => {
+  try {
+    const response = await apiInstance.get(`/getProduct/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching history:", error);
+    throw error.response ? error.response.data : new Error(error.message);
+  }
+};
+
+
+
+/**
+ * Fetch cart items  by  user 
+ * @returns {Promise<object>} - User carts 
+ */
+export const getCartsItems = async () => {
+  try {
+    const response = await apiInstance.get(`/user/getCarts`);
+    console.log(response);
+    
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching carts:", error);
+    throw error.response ? error.response.data : new Error(error.message);
+  }
+};
+
+
+

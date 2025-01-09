@@ -93,6 +93,7 @@ export const AddProduct = ({closeModal}) => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-2"
+        encType="multipart/form-data"
       >
         {/* Product Name Input */}
         <Div className="flex w-full items-center justify-between gap-2">

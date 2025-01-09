@@ -2,6 +2,7 @@ import CustomError from "../config/errors/CustomError.js";
 import Category from "../models/category.js";
 import product from "../models/product.js";
 
+
 export const createCategory = async (req, res) => {
   try {
     const data = req.body;
@@ -67,36 +68,44 @@ export const getSubCategory = async (req, res) => {
   }
 };
 
-export const createProduct = async (req, res) => {
-    try {
-      const { productName, subCategory, description, variants } = req.body.data;
-        
-      const processedVariants = variants.map((variant) => variant.data);
-      console.log(req.files);
-      if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json({ success: false, message: "No files were uploaded." });
-      }z
-      const newProduct = new product({
-        productName,
-        subCategory,
-        description,
-        variants: processedVariants,
-        // images: imageUrls, // Uncomment and process image uploads as needed
-      });
-  
-      await newProduct.save();
-  
-      return res.status(200).json({
-        success: true,
-        message: "Product created successfully",
-      });
-    } catch (error) {
-        console.log(error);
-        
-      return res.status(500).json({
+
+
+
+export const getSubCategoryWithCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.query; // Get the category ID from query parameters
+
+    if (!categoryId) {
+      return res.status(400).json({
         success: false,
-        message: error.message || "An error occurred while creating the product",
+        message: "Category ID is required",
       });
     }
-  };
-  
+
+    // Find subcategories where the parent matches the category ID
+    const subCategories = await Category.find({ parent: categoryId });
+
+    if (subCategories.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No subcategories found for the given category",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Subcategories fetched successfully",
+      data: subCategories,
+    });
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+
+    return res.status(500).json({
+      success: false,
+      message:
+        error.message || "An error occurred while fetching subcategories",
+    });
+  }
+};
+
+

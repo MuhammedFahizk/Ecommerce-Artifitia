@@ -77,6 +77,7 @@ function attachResponseInterceptor() {
           attachResponseInterceptor();
           return apiInstance(config);
         } catch (reauthError) {
+          logError(reauthError, store);
           console.log("Re-authentication error: ", reauthError);
         } finally {
           attachResponseInterceptor(); 

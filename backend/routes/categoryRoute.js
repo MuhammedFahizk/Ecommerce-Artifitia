@@ -1,58 +1,62 @@
 import express from "express";
-
-import categoryController  from '../controllers/index.js'
+import categoryController from "../controllers/index.js";
 import { requireAuthentication } from "../middleware/autchCheck.js";
 
 const router = express.Router();
 
-router.use(requireAuthentication)
+// Middleware to check authentication
+router.use(requireAuthentication);
+
 /**
- * @route POST /api/users/creteCategory
- * @description User Crete category Registration
- * @access Public
- * @param {Object} req - Express request object containing user data
+ * @route POST /api/users/createCategory
+ * @description Creates a new category
+ * @access Private
+ * @param {Object} req - Express request object containing category data
  * @param {Object} res - Express response object for sending responses
- * @returns {Object} - Response object containing the message and user data or error details
+ * @returns {Object} - Response object containing the message and category data or error details
  */
 router.post("/createCategory", categoryController.createCategory);
 
-
 /**
- * @method - Get category
- * @param {string} path - /api/users/category
- * @description - fetch user category data
- */
-router.get("/category",  categoryController.getCategory);
-
-
-/**
- * @method - Get Sub category
- * @param {string} path - /api/users/category
- * @description - fetch user category data
- */
-router.get("/getSubcategory",  categoryController.getSubCategory);
-
-
-
-/**
- * @route POST /api/users/creteSubCategory
- * @description User Crete Sub category Registration
- * @access Public
- * @param {Object} req - Express request object containing user data
+ * @route GET /api/users/category
+ * @description Fetches all categories
+ * @access Private
+ * @param {Object} req - Express request object
  * @param {Object} res - Express response object for sending responses
- * @returns {Object} - Response object containing the message and user data or error details
+ * @returns {Object} - Response object containing the list of categories or error details
+ */
+router.get("/category", categoryController.getCategory);
+
+/**
+ * @route GET /api/users/getSubcategory
+ * @description Fetches all subcategories
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object for sending responses
+ * @returns {Object} - Response object containing the list of subcategories or error details
+ */
+router.get("/getSubcategory", categoryController.getSubCategory);
+
+/**
+ * @route POST /api/users/createSubCategory
+ * @description Creates a new subcategory
+ * @access Private
+ * @param {Object} req - Express request object containing subcategory data
+ * @param {Object} res - Express response object for sending responses
+ * @returns {Object} - Response object containing the message and subcategory data or error details
  */
 router.post("/createSubCategory", categoryController.createCategory);
 
 
 /**
- * @route POST /api/users/createProduct
- * @description User Crete Sub category Registration
- * @access Public
- * @param {Object} req - Express request object containing product data
+ * @route GET /api/users/getSubCategoryWithCategory
+ * @description Fetches subcategories for a specific category
+ * @access Private
+ * @param {Object} req - Express request object
  * @param {Object} res - Express response object for sending responses
- * @returns {Object} - Response object containing the message and product  data or error details
+ * @returns {Object} - Response object containing the subcategories or error details
  */
-router.post("/createProduct", categoryController.createProduct);
+router.get("/getSubCategoryWithCategory", categoryController.getSubCategoryWithCategory);
+
 
 export default router;

@@ -65,4 +65,13 @@ router.post(
   requireAuthentication,
   userControllers.logoutAllDevices
 );
+
+
+/**
+ * @method - Get
+ * @param {string} path - /api/users/getCarts
+ * @description - fetch user cart data
+ */
+router.get("/getCarts", requireAuthentication, userControllers.getAllCartItems);
+
 export default router;

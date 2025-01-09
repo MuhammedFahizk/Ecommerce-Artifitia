@@ -5,6 +5,7 @@ export* from './SignUpUi'
 export* from './AddCategory'
 export* from './AddSubCategory'
 export* from './AddProduct'
+export* from './ProductList'
 
 
 

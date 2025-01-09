@@ -1,3 +1,4 @@
+import AuthorizationError from "../config/errors/AuthorizationError.js";
 import { User } from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
 // Top-level constants

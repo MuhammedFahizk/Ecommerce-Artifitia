@@ -23,6 +23,13 @@ const productSchema = new Schema({
         quantity: { type: Number, default: 1 },
       },
     ],
+    cart: [
+      {
+        productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+        quantity: { type: Number, required: true, default: 1 },
+        price: { type: Number, required: true }, 
+      },
+    ],
     images: [
       {
         url: { type: String, required: true },
