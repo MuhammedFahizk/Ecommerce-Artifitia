@@ -8,12 +8,24 @@ export const ProductList = () => {
     totalProducts: 0,
     totalPages: 0,
     currentPage: 1,
+   
   });
+
+  const [selectedSubCategories, setSelectedSubCategories] = useState([]);
 
   return (
     <Div className={"grid grid-cols-5 px-10"}>
-      <Category />
-      <Products pagination={pagination} setPagination={setPagination} />
+      <Category
+        pagination={pagination}
+        setPagination={setPagination}
+        selectedSubCategories={selectedSubCategories} 
+        setSelectedSubCategories={setSelectedSubCategories}
+      />
+      <Products
+        pagination={pagination}
+        setPagination={setPagination}
+        selectedSubCategories={selectedSubCategories} 
+      />
     </Div>
   );
 };

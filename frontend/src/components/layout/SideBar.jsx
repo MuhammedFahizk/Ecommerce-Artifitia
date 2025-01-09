@@ -7,7 +7,7 @@ import { Text } from "../common/Text";
 import { getCartsItems } from "../../services/getApi"; // Make sure this function exists
 import { SlClose } from "react-icons/sl";
 
-export const SideBar = ({ setSideMenuIsExpand }) => {
+export const SideBar = ({ setSideMenuIsExpand, cartCount, setCartCount  }) => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ export const SideBar = ({ setSideMenuIsExpand }) => {
 
         if (response && response.data) {
           setCartItems(response.data.cart);
+          setCartCount(response.data.cart.length)
         }
       } catch (error) {
         console.error("Error fetching cart items:", error);

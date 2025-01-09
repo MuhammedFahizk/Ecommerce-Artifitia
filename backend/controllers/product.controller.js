@@ -62,7 +62,8 @@ export const getAllProducts = async (req, res) => {
   try {
     const { userId } = req;
     const { page = 1, limit = 10, subCategory, search = "" } = req.body;
-
+    console.log(req.body);
+    
     const skip = (page - 1) * limit;
 
     const filters = {};
@@ -71,7 +72,7 @@ export const getAllProducts = async (req, res) => {
       filters.productName = { $regex: search, $options: "i" };
     }
 
-    if (subCategory) {
+    if (subCategory.length > 0 ) {
       filters.subCategory = subCategory;
     }
 

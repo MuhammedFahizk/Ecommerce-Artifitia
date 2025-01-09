@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllProducts } from "../services/postApi";
 
-export const useFetchProducts = (pagination, setPagination) => {
+export const useFetchProducts = (pagination, setPagination, selectedSubCategories) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,7 +10,7 @@ export const useFetchProducts = (pagination, setPagination) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await getAllProducts(pagination.currentPage, pagination.limit);
+      const response = await getAllProducts(pagination.currentPage, pagination.limit, selectedSubCategories);
       setProducts(response.data.products);
       setPagination(prev => ({
         ...prev, 
@@ -26,7 +26,7 @@ export const useFetchProducts = (pagination, setPagination) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [pagination.limit, pagination.currentPage]); // Trigger fetch when limit or page changes
+  }, [pagination.limit, pagination.currentPage, selectedSubCategories]); // Trigger fetch when limit or page changes
 
   return { products, loading, error, cart };
 };

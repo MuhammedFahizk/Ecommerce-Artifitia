@@ -3,11 +3,15 @@ import { Div, Text } from "../common/Index";
 import { getCategory, getSubCategoryWithCategory } from "../../services/getApi";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 
-export const Category = () => {
-  const [categories, setCategories] = useState([]); // State to store categories
-  const [expandedIndex, setExpandedIndex] = useState(null); // State to track expanded category
-  const [subCategories, setSubCategories] = useState({}); // State to store subcategories for each category
-  const [selectedSubCategories, setSelectedSubCategories] = useState([]); // State to store selected subcategories
+export const Category = ({
+  selectedSubCategories,
+  setSelectedSubCategories,
+  pagination,
+  setPagination,
+}) => {
+  const [categories, setCategories] = useState([]);
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [subCategories, setSubCategories] = useState({});
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -42,16 +46,23 @@ export const Category = () => {
     }
   };
 
-  const handleCheckboxChange = (subCategory) => {
+  const handleCheckboxChange = (subCategoryId) => {
     setSelectedSubCategories((prev) => {
-      if (prev.includes(subCategory)) {
-        // Remove the subcategory if it's already selected
-        return prev.filter((item) => item !== subCategory);
+      if (prev.includes(subCategoryId)) {
+        return prev.filter((id) => id !== subCategoryId); // Remove the ID
       } else {
-        // Add the subcategory if it's not selected
-        return [...prev, subCategory];
+        return [...prev, subCategoryId]; // Add the ID
       }
     });
+  };
+
+  const handleTextClick = (subCategoryId) => {
+    // Trigger the same action as checkbox click
+    handleCheckboxChange(subCategoryId);
+  };
+
+  const clearAllSelections = () => {
+    setSelectedSubCategories([]); // Clear all selected subcategories
   };
 
   return (
@@ -61,7 +72,7 @@ export const Category = () => {
       <Div>
         {categories.length > 0 ? (
           categories.map((category, index) => (
-            <Div key={index} className="py-2">
+            <Div key={category._id} className="py-2">
               {/* Category Header */}
               <Div
                 onClick={() => toggleCategory(index, category._id)} // Pass category._id
@@ -78,14 +89,19 @@ export const Category = () => {
               {expandedIndex === index && (
                 <Div className="pl-4 mt-2 text-secondary text-sm">
                   {subCategories[category._id] ? (
-                    subCategories[category._id].map((subCategory, i) => (
-                      <Div key={i} className="flex items-center space-x-2">
+                    subCategories[category._id].map((subCategory) => (
+                      <Div key={subCategory._id} className="flex items-center space-x-2">
                         <input
                           type="checkbox"
-                          checked={selectedSubCategories.includes(subCategory.name)} // Check if it's selected
-                          onChange={() => handleCheckboxChange(subCategory.name)} // Handle selection
+                          checked={selectedSubCategories.includes(subCategory._id)} // Check if ID is selected
+                          onChange={() => handleCheckboxChange(subCategory._id)} // Handle selection by ID
                         />
-                        <Text>{subCategory.name}</Text>
+                        <Text 
+                          onClick={() => handleTextClick(subCategory._id)} // Handle text click as well
+                          className="cursor-pointer"
+                        >
+                          {subCategory.name}
+                        </Text>
                       </Div>
                     ))
                   ) : (
@@ -100,20 +116,14 @@ export const Category = () => {
         )}
       </Div>
 
-      {/* Display Selected Subcategories */}
-      <Div className="mt-4">
-        <Text className={"text-primary font-semibold"}>Selected Subcategories:</Text>
-        {selectedSubCategories.length > 0 ? (
-          <ul className="list-disc pl-4">
-            {selectedSubCategories.map((subCategory, index) => (
-              <li key={index} className="text-secondary text-sm">
-                {subCategory}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <Text className={"text-secondary"}>No subcategories selected</Text>
-        )}
+      {/* Clear All Button */}
+      <Div className="mt-4  text-end ">
+        <button
+          onClick={clearAllSelections}
+          className=" text-red-400 text-xs font-semibold px-4 py-1 rounded"
+        >
+          Clear All
+        </button>
       </Div>
     </Div>
   );

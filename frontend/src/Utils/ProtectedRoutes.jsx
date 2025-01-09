@@ -8,7 +8,7 @@ const ProtectedRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   console.log(isLoggedIn);
   const [sideMenuIsExpand, setSideMenuIsExpand] = useState(false );
-
+  const [cartCount, setCartCount] = useState(0)
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
@@ -16,12 +16,12 @@ const ProtectedRoutes = () => {
   return (
     <Div className={"relative"}>
       <Div className={"absolute top-0 left-0 w-full h-screen bg-white z-10"}>
-        <Nav setSideMenuIsExpand={setSideMenuIsExpand}  />
+        <Nav cartCount={cartCount} setSideMenuIsExpand={setSideMenuIsExpand}  />
         <Outlet />
       </Div>
      {
       sideMenuIsExpand ? ( 
-        <SideBar setSideMenuIsExpand={setSideMenuIsExpand} />
+        <SideBar  cartCount={cartCount} setCartCount={setCartCount}  setSideMenuIsExpand={setSideMenuIsExpand} />
       ) : (
         <></>
       )

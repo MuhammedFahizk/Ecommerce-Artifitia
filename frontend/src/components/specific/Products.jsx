@@ -1,20 +1,23 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Card, Div, Text, Button } from "../common/Index"; // Assuming Button is imported for pagination
 import { useFetchProducts } from "../../hooks/useFetchProducts";
 
-export const Products = ({ pagination, setPagination }) => {
-  const { products, loading, error, cart } = useFetchProducts(pagination, setPagination);
+export const Products = ({ pagination, setPagination, selectedSubCategories }) => {
+  const { products, loading, error, cart } = useFetchProducts(pagination, setPagination, selectedSubCategories);
   
-  const handlePageChange = (page) => {
+  // Memoize the page change handler to prevent unnecessary re-renders
+  const handlePageChange = useCallback((page) => {
     setPagination((prev) => ({ ...prev, currentPage: page })); // Update the current page
-  };
+  }, [setPagination]);
 
-  const handleLimitChange = (newLimit) => {
+  // Memoize the limit change handler to prevent unnecessary re-renders
+  const handleLimitChange = useCallback((newLimit) => {
     if (newLimit !== pagination.limit) {
       setPagination((prev) => ({ ...prev, limit: newLimit, currentPage: 1 })); // Reset page to 1 on limit change
     }
-  };
+  }, [pagination.limit, setPagination]);
 
+  // Memoize pagination pages array to avoid recalculating it on every render
   const paginationMemo = useMemo(() => {
     return Array.from({ length: pagination.totalPages }, (_, i) => i + 1);
   }, [pagination.totalPages]);
@@ -28,7 +31,7 @@ export const Products = ({ pagination, setPagination }) => {
       ) : (
         <Div>
           <Div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {products.length > 0 ? (
+            {products.length > 1 ? (
               products.map((product, index) => (
                 <Card key={index} product={product} cart={cart} />
               ))
