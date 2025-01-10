@@ -65,7 +65,6 @@ Button.propTypes = {
   children: PropTypes.node.isRequired, 
 };
 
-// Default props
 Button.defaultProps = {
   className: '',
   style: {},

@@ -5,7 +5,6 @@ import { Div } from "./Div";
 export const Breadcrumb = () => {
   const location = useLocation();
 
-  // Split the path into segments
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   return (

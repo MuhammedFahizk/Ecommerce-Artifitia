@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 export const Text = ({ tag: Tag, className, style, animateProps, onClick, children }) => {
-  // Default animation settings (bottom to top)
   const defaultAnimation = {
     initial: { opacity: 0, y: 50 },
     animate: { opacity: 1, y: 0 },
@@ -12,8 +11,7 @@ export const Text = ({ tag: Tag, className, style, animateProps, onClick, childr
     transition: { duration: 0.5 },
   };
 
-  // Create a motion component dynamically
-  const MotionTag = motion[Tag] || motion.div; // Fallback to motion.div if Tag is invalid
+  const MotionTag = motion[Tag] || motion.div;
 
   return (
     <MotionTag
@@ -30,9 +28,8 @@ export const Text = ({ tag: Tag, className, style, animateProps, onClick, childr
   );
 };
 
-// PropTypes for validation
 Text.propTypes = {
-  tag: PropTypes.string, // Allows you to specify the HTML tag (e.g., 'h1', 'h2', 'p')
+  tag: PropTypes.string, 
   className: PropTypes.string,
   style: PropTypes.object,
   animateProps: PropTypes.shape({
@@ -45,9 +42,8 @@ Text.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// Default props
 Text.defaultProps = {
-  tag: 'div', // Default to 'div' if no tag is provided
+  tag: 'div', 
   className: '',
   style: {},
   animateProps: {},

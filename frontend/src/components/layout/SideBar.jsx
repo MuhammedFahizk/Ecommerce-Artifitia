@@ -4,7 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { Button } from "../common/Button";
 import { CiHeart } from "react-icons/ci";
 import { Text } from "../common/Text";
-import { getCartsItems } from "../../services/getApi"; // Make sure this function exists
+import { getCartsItems } from "../../services/getApi";
 import { SlClose } from "react-icons/sl";
 
 export const SideBar = ({ setSideMenuIsExpand, cartCount, setCartCount  }) => {

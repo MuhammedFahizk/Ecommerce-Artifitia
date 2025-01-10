@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { Card, Div, Text, Button } from "../common/Index"; // Assuming Button is imported for pagination
+import { Card, Div, Text, Button } from "../common/Index";
 import { useFetchProducts } from "../../hooks/useFetchProducts";
 
 export const Products = ({ pagination, setPagination, selectedSubCategories }) => {

@@ -12,9 +12,9 @@ export const Card = ({ product, cart }) => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await AddToCart(product._id); // Call the AddToCart API
+      const response = await AddToCart(product._id);
       console.log("Product added to cart:", response);
-      setIsAdded(true); // Mark the product as added
+      setIsAdded(true);
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }

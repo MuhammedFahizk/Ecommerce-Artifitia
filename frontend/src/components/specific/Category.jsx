@@ -28,8 +28,8 @@ export const Category = ({
 
   const fetchSubCategories = async (categoryId) => {
     try {
-      const response = await getSubCategoryWithCategory(categoryId); // Pass categoryId to the API
-      setSubCategories((prev) => ({ ...prev, [categoryId]: response.data })); // Use categoryId as the key
+      const response = await getSubCategoryWithCategory(categoryId); 
+      setSubCategories((prev) => ({ ...prev, [categoryId]: response.data })); 
     } catch (error) {
       console.error("Error fetching subcategories:", error);
     }
@@ -49,20 +49,19 @@ export const Category = ({
   const handleCheckboxChange = (subCategoryId) => {
     setSelectedSubCategories((prev) => {
       if (prev.includes(subCategoryId)) {
-        return prev.filter((id) => id !== subCategoryId); // Remove the ID
+        return prev.filter((id) => id !== subCategoryId);
       } else {
-        return [...prev, subCategoryId]; // Add the ID
+        return [...prev, subCategoryId]; 
       }
     });
   };
 
   const handleTextClick = (subCategoryId) => {
-    // Trigger the same action as checkbox click
     handleCheckboxChange(subCategoryId);
   };
 
   const clearAllSelections = () => {
-    setSelectedSubCategories([]); // Clear all selected subcategories
+    setSelectedSubCategories([]); 
   };
 
   return (
@@ -73,9 +72,8 @@ export const Category = ({
         {categories.length > 0 ? (
           categories.map((category, index) => (
             <Div key={category._id} className="py-2">
-              {/* Category Header */}
               <Div
-                onClick={() => toggleCategory(index, category._id)} // Pass category._id
+                onClick={() => toggleCategory(index, category._id)} 
                 className="flex justify-between items-center cursor-pointer"
               >
                 <Text className={"text-md font-semibold"}>{category.name}</Text>
@@ -93,11 +91,11 @@ export const Category = ({
                       <Div key={subCategory._id} className="flex items-center space-x-2">
                         <input
                           type="checkbox"
-                          checked={selectedSubCategories.includes(subCategory._id)} // Check if ID is selected
-                          onChange={() => handleCheckboxChange(subCategory._id)} // Handle selection by ID
+                          checked={selectedSubCategories.includes(subCategory._id)}
+                          onChange={() => handleCheckboxChange(subCategory._id)} 
                         />
                         <Text 
-                          onClick={() => handleTextClick(subCategory._id)} // Handle text click as well
+                          onClick={() => handleTextClick(subCategory._id)}
                           className="cursor-pointer"
                         >
                           {subCategory.name}

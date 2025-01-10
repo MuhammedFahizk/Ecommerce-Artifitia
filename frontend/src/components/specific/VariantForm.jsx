@@ -14,8 +14,8 @@ export const VariantForm = ({ index, onChange, variantsData }) => {
       ...variantData,
       [name]: value,
     };
-    setVariantData(updatedData); // Update the local state
-    onChange(index, updatedData); // Send the updated data to the parent
+    setVariantData(updatedData);
+    onChange(index, updatedData); 
   };
 
   useEffect(() => {

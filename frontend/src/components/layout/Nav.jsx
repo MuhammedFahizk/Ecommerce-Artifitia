@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Div } from "../common/Index";
 import { Headings } from "./Index";
 import { useDispatch } from "react-redux";
-import { setSearch } from "../../Redux/feathers/auth"; // Ensure the action is imported
+import { setSearch } from "../../Redux/feathers/auth";
 import { SlClose } from "react-icons/sl";
 
 export const Nav = ({ setSideMenuIsExpand, cartCount }) => {
@@ -10,12 +10,10 @@ export const Nav = ({ setSideMenuIsExpand, cartCount }) => {
   const dispatch = useDispatch();
 
   const handleSearch = () => {
-    // Dispatch the search term to Redux
     dispatch(setSearch(searchTerm));
   };
 
   const handleClear = () => {
-    // Clear the search input and dispatch an empty search term to Redux
     setSearchTerm("");
     dispatch(setSearch(""));
   };
@@ -27,12 +25,12 @@ export const Nav = ({ setSideMenuIsExpand, cartCount }) => {
         <input
           className="w-[200px] rounded-s-2xl h-[40px]"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+          onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search products"
         />
          {searchTerm && (
           <Button
-            className={" w-12 rounded-xl -ms-12 h-[40px]"} // Adjust style for the clear button
+            className={" w-12 rounded-xl -ms-12 h-[40px]"} 
             onClick={handleClear}
           >
             <SlClose className="text-xl "/>

@@ -25,10 +25,9 @@ export const AddProduct = ({ closeModal, productData }) => {
     type: "",
     message: "",
   });
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Pre-fill form fields if editing an existing product
     if (productData) {
       setValue("productName", productData.productName);
       setValue("description", productData.description);
@@ -39,11 +38,10 @@ export const AddProduct = ({ closeModal, productData }) => {
   }, [productData, setValue]);
 
   const onSubmit = async (data) => {
-    setLoading(true); // Set loading to true when submitting the form
+    setLoading(true);
     try {
       data.variants = variants;
 
-      // Check if it's an update or add operation
       let response;
       if (productData) {
         response = await updateProduct(data, productData._id);
@@ -61,7 +59,7 @@ export const AddProduct = ({ closeModal, productData }) => {
       console.error(errorMessage);
       showNotification("error", errorMessage);
     } finally {
-      setLoading(false); // Set loading to false after the request is complete
+      setLoading(false);
     }
   };
 
@@ -153,10 +151,8 @@ export const AddProduct = ({ closeModal, productData }) => {
           </select>
         </Div>
 
-        {/* Variant Section */}
         <Variant onChange={setVariants} variantsData={productData?.variants} />
 
-        {/* Description Input */}
         <Div className="flex w-full items-center justify-between gap-4">
           <Text className="w-1/4 text-gray-500">Description :</Text>
           <InputField
@@ -172,7 +168,6 @@ export const AddProduct = ({ closeModal, productData }) => {
           />
         </Div>
 
-        {/* Product Images */}
         <Div className="flex gap-3">
           <Text className="w-1/4 text-gray-500">Product Images :</Text>
           {imageInputs.map((input, index) => (
@@ -209,7 +204,6 @@ export const AddProduct = ({ closeModal, productData }) => {
           ))}
         </Div>
 
-        {/* Submit Button */}
         <Div className="flex justify-center gap-3 mt-4">
           <Button
             className="bg-secondary rounded-xl p-2 px-5"

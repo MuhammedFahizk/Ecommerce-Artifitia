@@ -3,14 +3,13 @@ import PropTypes from "prop-types";
 import { Div } from "./Div";
 
 export const Notification = ({
-  type = "info", // Type: success | error | info | warning
+  type = "info", 
   message = "This is a notification!",
-  duration = 3000, // Duration in milliseconds (0 for no auto-dismiss)
-  onClose, // Callback for when the notification is closed
+  duration = 3000,
+  onClose,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
-  // Auto-dismiss logic
   useEffect(() => {
     if (duration > 0) {
       const timer = setTimeout(() => {
@@ -20,20 +19,18 @@ export const Notification = ({
     }
   }, [duration]);
 
-  // Handle manual close
   const handleClose = () => {
     setIsVisible(false);
-    if (onClose) onClose(); // Trigger callback
+    if (onClose) onClose();
   };
 
-  if (!isVisible) return null; // Hide component if not visible
+  if (!isVisible) return null; 
 
-  // Dynamic styles based on type using DaisyUI
   const typeStyles = {
-    success: "alert-success", // DaisyUI success alert class
-    error: "alert-error", // DaisyUI error alert class
-    info: "alert-info", // DaisyUI info alert class
-    warning: "alert-warning", // DaisyUI warning alert class
+    success: "alert-success",
+    error: "alert-error",
+    info: "alert-info",
+    warning: "alert-warning", 
   };
 
   return (

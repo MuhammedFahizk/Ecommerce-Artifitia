@@ -9,7 +9,7 @@ export const InputField = ({
   validation,
   errors,
   className = "",
-  icon: Icon = null, // Optional icon prop
+  icon: Icon = null,
 }) => {
   return (
     <Div className="mb-4 w-full">
@@ -24,7 +24,7 @@ export const InputField = ({
           placeholder={placeholder}
           className={`input bg-info w-full ${
             errors[name] ? "input-error" : ""
-          } ${Icon ? "pl-10" : ""} ${className}`} // Add padding if icon is present
+          } ${Icon ? "pl-10" : ""} ${className}`} 
           {...register(name, validation)}
         />
       </Div>

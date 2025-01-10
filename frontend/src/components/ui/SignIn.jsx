@@ -40,7 +40,6 @@ export const SignIn = () => {
       </Text>
       <Div className="w-full max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {/* Email Input */}
           <InputField
             type="email"
             placeholder="Email"
@@ -57,7 +56,6 @@ export const SignIn = () => {
             errors={errors}
           />
 
-          {/* Password Input */}
           <InputField
             type="password"
             placeholder="Password"
@@ -74,7 +72,6 @@ export const SignIn = () => {
             errors={errors}
           />
 
-          {/* Submit Button */}
           <Button
             type="submit"
             className="btn bg-secondary  mx-auto w-fit px-20 rounded-full text-white text-xl "

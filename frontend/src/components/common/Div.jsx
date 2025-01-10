@@ -24,7 +24,6 @@ export const Div = ({ className, style, animateProps, onClick, children }) => {
   );
 };
 
-// PropTypes for validation
 Div.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
