@@ -1,45 +1,68 @@
-// AddProduct.js
 import { useForm } from "react-hook-form";
-import { Div, InputField, Notification, Text } from "../common/Index";
+import { Button, Div, InputField, Notification, Text } from "../common/Index";
 import { useEffect, useState } from "react";
 import { LuImagePlus } from "react-icons/lu";
 import { Variant } from "../specific/Variant";
-import {  getSubCategory } from "../../services/getApi";
+import { getSubCategory } from "../../services/getApi";
 import { addProduct } from "../../services/postApi";
+import { updateProduct } from "../../services/patchApi";
 
-export const AddProduct = ({closeModal}) => {
+export const AddProduct = ({ closeModal, productData }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    reset
+    reset,
   } = useForm();
 
   const [imageInputs, setImageInputs] = useState([0]);
   const [imagePreviews, setImagePreviews] = useState([null]);
-  const [variants, setVariants] = useState([]); // State for variants
+  const [variants, setVariants] = useState([]);
   const [categories, setCategories] = useState([]);
   const [notification, setNotification] = useState({
     isVisible: false,
     type: "",
     message: "",
   });
-  const onSubmit =async (data) => {
-        console.log(variants);
-        data.variants = variants
+  const [loading, setLoading] = useState(false); // Loading state
+
+  useEffect(() => {
+    // Pre-fill form fields if editing an existing product
+    if (productData) {
+      setValue("productName", productData.productName);
+      setValue("description", productData.description);
+      setValue("subCategory", productData.subCategory);
+      setVariants(productData.variants || []);
+      setImagePreviews(productData.images || []);
+    }
+  }, [productData, setValue]);
+
+  const onSubmit = async (data) => {
+    setLoading(true); // Set loading to true when submitting the form
     try {
-        const response = await addProduct(data);
-        console.log(response);
-        showNotification("success", "Sub Category added successfully!");
-        reset();
-        closeModal();
-      } catch (error) {
-        const errorMessage =
-          error?.message.cause || "An unexpected error occurred.";
-        console.error(errorMessage);
-        showNotification("error", errorMessage);
+      data.variants = variants;
+
+      // Check if it's an update or add operation
+      let response;
+      if (productData) {
+        response = await updateProduct(data, productData._id);
+        showNotification("success", "Product updated successfully!");
+      } else {
+        response = await addProduct(data);
+        showNotification("success", "Product added successfully!");
       }
+
+      console.log(response);
+      reset();
+      closeModal();
+    } catch (error) {
+      const errorMessage = error?.message?.cause || "An unexpected error occurred.";
+      console.error(errorMessage);
+      showNotification("error", errorMessage);
+    } finally {
+      setLoading(false); // Set loading to false after the request is complete
+    }
   };
 
   const showNotification = (type, message) => {
@@ -51,7 +74,6 @@ export const AddProduct = ({closeModal}) => {
       try {
         const response = await getSubCategory();
         setCategories(response.data);
-        console.log(response);
       } catch (error) {
         console.error("Error fetching categories:", error);
         showNotification("error", "Failed to fetch categories.");
@@ -86,7 +108,9 @@ export const AddProduct = ({closeModal}) => {
 
   return (
     <Div className="flex flex-col items-center w-full">
-      <h1 className="text-2xl font-semibold mb-2">Add Product</h1>
+      <h1 className="text-2xl font-semibold mb-2">
+        {productData ? "Update Product" : "Add Product"}
+      </h1>
       {notification.isVisible && (
         <Notification type={notification.type} message={notification.message} />
       )}
@@ -130,7 +154,7 @@ export const AddProduct = ({closeModal}) => {
         </Div>
 
         {/* Variant Section */}
-        <Variant onChange={setVariants} />
+        <Variant onChange={setVariants} variantsData={productData?.variants} />
 
         {/* Description Input */}
         <Div className="flex w-full items-center justify-between gap-4">
@@ -187,16 +211,22 @@ export const AddProduct = ({closeModal}) => {
 
         {/* Submit Button */}
         <Div className="flex justify-center gap-3 mt-4">
-          <button className="bg-secondary rounded-xl p-2 px-5" type="submit">
-            Add Product
-          </button>
-          <button
+          <Button
+            className="bg-secondary rounded-xl p-2 px-5"
+            type="submit"
+            disabled={loading} 
+            loading= {loading}
+          >
+           
+             { productData ? "Update Product" : "Add Product"}
+          </Button>
+          <Button
             className="bg-btn rounded-xl p-2 px-5"
             type="button"
-            onClick={() => console.log("Form discarded")}
+            onClick={closeModal}
           >
             Discard
-          </button>
+          </Button>
         </Div>
       </form>
     </Div>

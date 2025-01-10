@@ -1,21 +1,19 @@
 import { apiInstance } from "./apiInstence";
 
 /**
- * updateProfile API endpoint
- * @param {Object} data - The updated user profile data
- * @returns {Promise} - API response
+ * Updates a product by its ID.
+ * @param {Object} data - The updated product data.
+ * @param {string} productId - The ID of the product to be updated.
+ * @returns {Promise<Object>} - API response data.
  */
-export const updateProfile = async (data) => {
-    try {
-      const response = await apiInstance.patch("/user/profile", data, {
-        withCredentials: true, 
-        
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      throw error.response ? error.response.data : new Error(error.message);
-    }
-  };
-  
-  
+export const updateProduct = async (data, productId) => {
+  try {
+    const response = await apiInstance.patch(`/updateProduct/${productId}`, data, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error.response ? error.response.data : new Error("Unable to update product. Please try again.");
+  }
+};

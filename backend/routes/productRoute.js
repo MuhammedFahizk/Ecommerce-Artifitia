@@ -46,4 +46,15 @@ router.get("/getProduct/:id", requireAuthentication, productController.getProduc
 router.post("/addToCart/:productId", requireAuthentication, productController.addToCart);
 
 
+
+/**
+ * @route PATCH /api/users/updateProduct
+ * @description Partially updates an existing product
+ * @access Private
+ * @param {Object} req - Express request object with product data and optional files
+ * @param {Object} res - Express response object for sending responses
+ * @returns {Object} - Response object containing the updated product or error details
+ */
+router.patch("/updateProduct/:productId", productController.updateProduct);
+
 export default router;

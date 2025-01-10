@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Breadcrumb } from "../components/common/Breadcrumb";
-import { Button, Div, Text } from "../components/common/Index";
+import { Button, Div, Modal, Text } from "../components/common/Index";
 import { getProduct } from "../services/getApi";
 import { IoIosCheckmark, IoIosClose } from "react-icons/io";
 import { CiHeart } from "react-icons/ci";
+import { AddProduct } from "../components/ui/AddProduct";
 
 export const ProductDetails = () => {
   const { id } = useParams(); // Get product ID from the URL
@@ -15,6 +16,7 @@ export const ProductDetails = () => {
   const [selectedVariant, setSelectedVariant] = useState(null); // State for managing selected variant
   const [price, setPrice] = useState(0); // State for the price of the selected variant
   const [quantity, setQuantity] = useState(1); // State for managing the product quantity
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal open/close
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -52,6 +54,14 @@ export const ProductDetails = () => {
       }
       return prevQuantity;
     });
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false); // Close the modal
   };
 
   if (loading) return <div>Loading...</div>; // Show loading state
@@ -139,14 +149,16 @@ export const ProductDetails = () => {
           <Div>
             <Text className={"text-sm"}>Quantity:</Text>
             <Div className={"flex items-center gap-0"}>
-            <Button
+              <Button
                 className="bg-gray-300 px-2 py-1 border"
                 onClick={() => handleQuantityChange("decrease")}
               >
                 -
               </Button>
-              <Text className={'bg-gray-300 w-6 px-1 h-8 items-center text-center '}>{quantity}</Text> {/* Display current quantity */}
-              
+              <Text className="bg-gray-300 w-6 px-1 h-8 items-center text-center ">
+                {quantity}
+              </Text>{" "}
+              {/* Display current quantity */}
               <Button
                 className="bg-gray-300 px-2 py-1 border"
                 onClick={() => handleQuantityChange("increase")}
@@ -155,18 +167,28 @@ export const ProductDetails = () => {
               </Button>
             </Div>
 
-            <Div className={'px-10 text-white flex  gap-3  p-5'}>
-                <Button className={ " bg-secondary px-4 rounded-2xl  p-2 "} >
-                    Edit Product
-                </Button>
+            <Div className={"px-10 text-white flex gap-3 p-5"}>
+              <Button
+                className={"bg-secondary px-4 rounded-2xl p-2"}
+                onClick={handleModalOpen}
+              >
+                Edit Product
+              </Button>
+              <Modal
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                width="max-w-2xl"
+              >
+                <AddProduct productData={product} />
+              </Modal>
 
-                <Button className={ " bg-secondary px-4 rounded-2xl  p-2 "} >
-                    Buy it now
-                </Button>
+              <Button className={"bg-secondary px-4 rounded-2xl p-2"}>
+                Buy it now
+              </Button>
 
-                <Button className={ " bg-btn px-3 rounded-full  p-2 "} >
-                   <CiHeart className="text-xl text-black"/>
-                </Button>
+              <Button className={"bg-btn px-3 rounded-full p-2"}>
+                <CiHeart className="text-xl text-black" />
+              </Button>
             </Div>
           </Div>
         </Div>

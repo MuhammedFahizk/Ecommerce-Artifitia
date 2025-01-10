@@ -4,7 +4,7 @@ import { Div } from "../common/Div";
 import { Button } from "../common/Button";
 import { Text } from "../common/Text";
 
-export const Variant = ({ onChange }) => {
+export const Variant = ({ onChange, variantsData }) => {
   const [variants, setVariants] = useState([{ index: 0, data: {} }]);
 
 
@@ -35,6 +35,7 @@ export const Variant = ({ onChange }) => {
     <Div className={' flex flex-col gap-2'}>
     {variants.map((variant, index) => (
         <VariantForm
+        variantsData={variantsData? variantsData[index]: null}
           key={index}
           index={index}
           onChange={handleVariantChange}

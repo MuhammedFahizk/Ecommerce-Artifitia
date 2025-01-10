@@ -63,7 +63,7 @@ export const getAllProducts = async (req, res) => {
     const { userId } = req;
     const { page = 1, limit = 10, subCategory, search = "" } = req.body;
     console.log(req.body);
-    
+
     const skip = (page - 1) * limit;
 
     const filters = {};
@@ -72,7 +72,7 @@ export const getAllProducts = async (req, res) => {
       filters.productName = { $regex: search, $options: "i" };
     }
 
-    if (subCategory.length > 0 ) {
+    if (subCategory.length > 0) {
       filters.subCategory = subCategory;
     }
 
@@ -177,5 +177,73 @@ export const addToCart = async (req, res) => {
   } catch (error) {
     console.error("Error adding product to cart:", error);
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
+export const updateProduct = async (req, res) => {
+  try {
+    const { productId } = req.params; // Ensure `productId` is provided
+
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: "Product ID is required",
+      });
+    }
+
+    // Find the product by ID
+    const existingProduct = await product.findById(productId);
+    if (!existingProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    const updates = {};
+    const { productName, subCategory, description, variants } = req.body;
+
+    if (productName) updates.productName = productName;
+    if (subCategory) updates.subCategory = subCategory;
+    if (description) updates.description = description;
+    if (variants) {
+      try {
+        updates.variants = JSON.parse(variants);
+      } catch (error) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid variants format",
+        });
+      }
+    }
+
+    // Handle new image uploads (if provided)
+    if (req.files) {
+      const imageUrls = existingProduct.images || [];
+      for (const key in req.files) {
+        const file = req.files[key];
+        const uploadResult = await uploadImageCloudinary(file);
+        imageUrls.push({ url: uploadResult.secure_url });
+      }
+      updates.images = imageUrls;
+    }
+
+    // Update the product with the new data
+    Object.assign(existingProduct, updates);
+    await existingProduct.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      product: existingProduct,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "An error occurred while updating the product",
+    });
   }
 };

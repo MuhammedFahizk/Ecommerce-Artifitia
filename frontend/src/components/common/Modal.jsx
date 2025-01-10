@@ -1,7 +1,7 @@
 import React from "react";
 import { Div } from "./Div";
 
-export const Modal = ({ isOpen,width, onClose, children, className = "" }) => {
+export const Modal = ({ isOpen,width, onClose, children, className = "" , productData }) => {
   if (!isOpen) return null; // Do not render the modal if it's not open
 
   return (
@@ -9,7 +9,7 @@ export const Modal = ({ isOpen,width, onClose, children, className = "" }) => {
       id="default-modal"
       tabIndex="-1"
       aria-hidden={!isOpen}
-      className={`fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50 ${className}`}
+      className={`fixed top-0 left-0 text-gray-600 right-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50 ${className}`}
     >
       {/* Modal Content */}
       <Div className=   {`bg-white rounded-lg shadow-lg  ${width ? width : 'max-w-lg'}  px-6   py-2 overflow-y-scroll h-fit relative`}>
