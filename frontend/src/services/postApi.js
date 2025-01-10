@@ -176,12 +176,13 @@ export const addProduct = async (data) => {
  * @returns {Promise<object>} - The server's response containing product data.
  * @throws {Error} - Throws an error if fetching products fails.
  */
-export const getAllProducts = async (page, limit, selectedSubCategories) => {
+export const getAllProducts = async (page, limit, selectedSubCategories, searchTerm) => {
   try {
     const response = await apiInstance.post("/getAllProducts", {
       page,
       limit,
-      subCategory:selectedSubCategories
+      subCategory:selectedSubCategories,
+      search:searchTerm
     });
     return response.data;
   } catch (error) {

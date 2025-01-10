@@ -31,9 +31,13 @@ const authSlice = createSlice({
     },
     setUser(state, action) {
       state.user = action.payload;
+    },
+    setSearch(state, action) {
+      state.search = action.payload;
     }
+    
   },
 });
 
-export const { setAccessToken, setUser, clearAccessToken,authUserLogout, authUserLoading, toggleUserLoading } = authSlice.actions;
+export const { setAccessToken,  setSearch, setUser, clearAccessToken,authUserLogout, authUserLoading, toggleUserLoading } = authSlice.actions;
 export default authSlice.reducer;
